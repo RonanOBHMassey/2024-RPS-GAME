@@ -1,3 +1,6 @@
+import random
+
+
 # Check that users have entered a valid
 # option based on a list
 def string_checker(question, valid_ans=("yes", "no")):
@@ -36,6 +39,7 @@ press enter to choose infinite mode.
 Then you play against the computer.
 You need to pick between: 
 R (rock), P (paper) and S (scissors)
+and X(xxx) which is the exit code.
 
 The rules are as follows:
 Paper Captures Rock
@@ -68,6 +72,27 @@ def int_check(question):
 
         except ValueError:
             print(error)
+
+
+# Check that users have entered a valid
+# option based on a list
+def rps_compare(user, comp):
+    if user == comp:
+        result = "tie"
+
+    # there are 3 ways to win
+    elif user == "paper" and comp == "rock":
+        result = "win"
+    elif user == "scissors" and comp == "paper":
+        result = "win"
+    elif user == "rock" and comp == "scissors":
+        result = "win"
+
+    # if is not tie / win then you lose.
+    else:
+        result = "lose"
+
+    return result
 
 
 # Main routine starts here
@@ -109,11 +134,20 @@ while rounds_played < num_rounds:
     print(rounds_heading)
     print()
 
-    user_choice = string_checker("Choose: ")
+    user_choice = string_checker("Choose: ", rps_list)
+    print("You Chose:", user_choice)
 
     # if user enters exit code, game ends.
     if user_choice == "xxx":
+        print("Aw Man, Fun's Over.")
         break
+
+    # Randomly choose from the rps list excluding the exit code. We do not want the computer giving up.
+    comp_choice = random.choice(rps_list[:-1])
+    print("Computer Choice:", comp_choice)
+
+    result = rps_compare(user_choice, comp_choice)
+    print(f"{user_choice} vs {comp_choice}, {result}")
 
     rounds_played += 1
 
